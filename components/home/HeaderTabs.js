@@ -10,7 +10,7 @@ const HeaderTabs = () => {
                 btnColor="black"
                 textColor="white"
                 activeTab={activeTab}
-                setActiveTab={setActiveTab}
+                setActiveTab={setActiveTab} 
             />
             <HeaderButton 
                 text="Pickup"
