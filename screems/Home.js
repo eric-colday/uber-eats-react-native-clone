@@ -7,15 +7,17 @@ import RestaurantItems, {
     localRestaurants,
 } from "../components/home/RestaurantItems";
 
-// const YELP_API_KEY = "R49YQyYivJoW3U1KqFSaTwODuSOSSoo0vapVHWjKV72BNy9_RM_dtulVdfPfQLxy4ki4APsibs1fGwYQ16rIgGoMVSXaEqxZOk01f0-5qZ9PlIAMhvGSfoXuwmLUYnYx";
+const YELP_API_KEY = "R49YQyYivJoW3U1KqFSaTwODuSOSSoo0vapVHWjKV72BNy9_RM_dtulVdfPfQLxy4ki4APsibs1fGwYQ16rIgGoMVSXaEqxZOk01f0-5qZ9PlIAMhvGSfoXuwmLUYnYx";
 
 
 
-const Home = (navigation) => {
+const Home = () => {
     const [restaurantData, setRestaurantData] = useState(localRestaurants);
+    const [city, setCity] = useState("Strasbourg");
+    const [activeTab, setActiveTab] = useState("Delivery");
 
     const getRestaurantsFromYelp = () => {
-        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=Strasbourg`;
+        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
 
         const apiOptions = {
             headers: {
@@ -25,14 +27,26 @@ const Home = (navigation) => {
 
         return fetch(yelpUrl, apiOptions)
             .then((res) => res.json())
-            .then((json) => setRestaurantData(json.businesses));
+            // probleme à resoudre ci-dessous
+            .then((json) =>
+                setRestaurantData(
+                json.businesses.filter((business) =>
+                    business.transactions.includes(activeTab.toLowerCase())
+                )
+            )
+      );
     }
+
+    useEffect(() => {
+        getRestaurantsFromYelp(); 
+    }, [city, activeTab]);
+    
 
     return (
         <SafeAreaView style={{ backgroundColor: "#eee", flex: 1 }}>
             <View style={{ backgroundColor: "white", padding: 15 }}>
-                <HeaderTabs />
-                <SearchBar />
+                <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
+                <SearchBar cityHandler={setCity}/>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Categories />
