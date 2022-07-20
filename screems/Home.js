@@ -6,6 +6,9 @@ import Categories from "../components/home/Categories";
 import RestaurantItems, {
     localRestaurants,
 } from "../components/home/RestaurantItems";
+import { Divider } from "react-native-elements";
+import BottomTabs from "../components/home/BottomTabs";
+
 
 const YELP_API_KEY = "R49YQyYivJoW3U1KqFSaTwODuSOSSoo0vapVHWjKV72BNy9_RM_dtulVdfPfQLxy4ki4APsibs1fGwYQ16rIgGoMVSXaEqxZOk01f0-5qZ9PlIAMhvGSfoXuwmLUYnYx";
 
@@ -30,12 +33,13 @@ const Home = () => {
             // probleme à resoudre ci-dessous
             .then((json) =>
                 setRestaurantData(
-                json.businesses.filter((business) =>
-                    business.transactions.includes(activeTab.toLowerCase())
-                )
+                    json.businesses
             )
       );
     }
+
+    // .filter((business) =>
+    //business.transactions.includes(activeTab.toLowerCase()) )
 
     useEffect(() => {
         getRestaurantsFromYelp(); 
@@ -54,6 +58,8 @@ const Home = () => {
                     restaurantData={restaurantData}
                 />
             </ScrollView>
+            <Divider width={1} />
+            <BottomTabs />
         </SafeAreaView>
     );
 };
