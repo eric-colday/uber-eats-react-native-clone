@@ -14,7 +14,7 @@ const YELP_API_KEY = "R49YQyYivJoW3U1KqFSaTwODuSOSSoo0vapVHWjKV72BNy9_RM_dtulVdf
 
 
 
-const Home = () => {
+const Home = ({ navigation }) => {
     const [restaurantData, setRestaurantData] = useState(localRestaurants);
     const [city, setCity] = useState("Strasbourg");
     const [activeTab, setActiveTab] = useState("Delivery");
@@ -33,7 +33,7 @@ const Home = () => {
             // probleme à resoudre ci-dessous
             .then((json) =>
                 setRestaurantData(
-                    json.businesses
+                    json.businesses 
             )
       );
     }
@@ -56,6 +56,7 @@ const Home = () => {
                 <Categories />
                 <RestaurantItems
                     restaurantData={restaurantData}
+                    navigation={navigation}
                 />
             </ScrollView>
             <Divider width={1} />
